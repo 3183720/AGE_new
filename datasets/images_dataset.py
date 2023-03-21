@@ -8,20 +8,25 @@ class ImagesDataset(Dataset):
 
 	def __init__(self, source_root, target_root, opts, target_transform=None, source_transform=None):
 		self.source_paths = sorted(data_utils.make_dataset(source_root))
-		self.target_paths = sorted(data_utils.make_dataset(target_root))
+		self.target_paths = sorted(data_utils.make_dataset(target_root))    
 		self.source_transform = source_transform
 		self.target_transform = target_transform
 		self.average_codes = torch.load(opts.class_embedding_path, map_location=torch.device("cpu"))
+		self.average_codes1 = torch.load(opts.secondary_class_embedding_path, map_location=torch.device("cpu"))
+		self.cate1_list=self.average_codes1.key()     
 		self.opts = opts
-
+	def find_matching_emotion_(self):
+     
+        
 	def __len__(self):
 		return len(self.source_paths)
 
 	def __getitem__(self, index):
 		from_path = self.source_paths[index]
 		cate = from_path.split('/')[-1].split('_')[0]
+		cate1 = from_path.split('/')[-1].split('_')[1]      # category for emotion
 		from_im = Image.open(from_path)
-		from_im = from_im.convert('RGB') if self.opts.label_nc == 0 else from_im.convert('L')
+		from_im = from_im.convert('RGB') if self.opts.label_nc == 0 else from_im.convert('L')     
 		to_path = self.target_paths[index]
 		to_im = Image.open(to_path).convert('RGB')
 		if self.target_transform:

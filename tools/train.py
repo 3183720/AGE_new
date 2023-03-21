@@ -143,9 +143,9 @@ def train():
 	while global_step < opts.max_steps:
 		for batch_idx, batch in enumerate(train_dataloader):
 			optimizer.zero_grad()
-			x, y, av_codes = batch
-			x, y, av_codes = x.to(device).float(), y.to(device).float(), av_codes.to(device).float()
-			outputs = net.forward(x, av_codes, return_latents=True)
+			x, y, av_codes, av_codes1 = batch
+			x, y, av_codes, av_codes1 = x.to(device).float(), y.to(device).float(), av_codes.to(device).float(), av_codes1.to(device).float()
+			outputs = net.forward(x, av_codes, av_codes1, return_latents=True)
 			loss, loss_dict, id_logs = calc_loss(opts, outputs, y, orthogonal, sparse, lpips)
 			loss.backward()
 			optimizer.step()
@@ -188,9 +188,9 @@ def validate(opts, net, orthogonal, sparse, lpips, valid_dataloader, device, glo
 	net.eval()
 	agg_loss_dict = []
 	for batch_idx, batch in enumerate(valid_dataloader):
-		x, y, av_codes = batch
+		x, y, av_codes, av_codes1 = batch
 		with torch.no_grad():
-			x, y, av_codes = x.to(device).float(), y.to(device).float(), av_codes.to(device).float()
+			x, y, av_codes, av_codes1 = x.to(device).float(), y.to(device).float(), av_codes.to(device).float(),av_codes1.to(device).float()
 			outputs = net.forward(x, av_codes, return_latents=True)
 			loss, cur_loss_dict, id_logs = calc_loss(opts, outputs, y, orthogonal, sparse, lpips)
 		agg_loss_dict.append(cur_loss_dict)

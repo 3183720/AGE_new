@@ -20,7 +20,7 @@ class TestOptions:
 		
 		self.parser.add_argument('--test_batch_size', default=2, type=int, help='Batch size for testing and inference')
 		self.parser.add_argument('--test_workers', default=2, type=int, help='Number of test/inference dataloader workers')
-		
+		self.parser.add_argument('--secondary_class_embedding_path', default=None, type=str, help='path to secondary class embedding')
 		self.parser.add_argument('--n_images', type=int, default=128, help='Number of images to generate on per input')
 		self.parser.add_argument('--A_length', default=100, type=int, help='Length of A')
 		self.parser.add_argument('--alpha', default=1, type=float, help='Editing intensity alpha')
