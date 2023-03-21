@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+import os 
 from torch.utils.data import Dataset
 from PIL import Image
 from utils import data_utils
@@ -18,7 +19,7 @@ class ImagesDataset(Dataset):
 		self.opts = opts
 	def find_matching_target_file(self,from_path):
 		cate = from_path.split('/')[-1].split('_')[0]      
-		files = [ idx for (idx, file) in enumerate(self.target_paths) if os.relpath(file, self.target_root).split('_')[0] == cate] # find images of the same identity in target folder
+		files = [ idx for (idx, file) in enumerate(self.target_paths) if os.relpath(file, self.target_root).split('_')[0] == cate ] # find images of the same identity in target folder
 		idx = np.random.choice( len(files) , 1) # randomly pick one emotion
 		to_path = files[idx]
 		cate1 = os.relpath(to_path, self.target_root).split('_')[1]     
