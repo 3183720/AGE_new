@@ -19,10 +19,11 @@ class ImagesDataset(Dataset):
 		self.opts = opts
 	def find_matching_target_file(self,from_path):
 		cate = from_path.split('/')[-1].split('_')[0]      
-		files = [ idx for (idx, file) in enumerate(self.target_paths) if os.relpath(file, self.target_root).split('_')[0] == cate ] # find images of the same identity in target folder
-		idx = np.random.choice( len(files) , 1) # randomly pick one emotion
+		files = [ file for file in self.target_paths if os.path.relpath(file, self.target_root).split('_')[0] == cate ] # find images of the same identity in target folder
+		idx = np.random.choice( len(files) , 1)[0] # randomly pick one emotion
 		to_path = files[idx]
-		cate1 = os.relpath(to_path, self.target_root).split('_')[1]     
+
+		cate1 = os.path.relpath(to_path, self.target_root).split('_')[1]     
 		return to_path, cate1      
 	def __len__(self):
 		return len(self.source_paths)
@@ -32,9 +33,9 @@ class ImagesDataset(Dataset):
 		cate = from_path.split('/')[-1].split('_')[0]
 		cate1 = from_path.split('/')[-1].split('_')[1]      # category for emotion
 		from_im = Image.open(from_path)
-		from_im = from_im.convert('RGB') if self.opts.label_nc == 0 else from_im.convert('L')     
+		from_im = from_im.convert('RGB')  #if self.opts.label_nc == 0 else from_im.convert('L') 
 		to_path, cate1= self.find_matching_target_file(from_path)
-		to_im = Image.open(to_path).convert('RGB')
+		to_im = Image.open(to_path).convert('RGB') #if self.opts.label_nc == 0 else from_im.convert('L')     
 		if self.target_transform:
 			to_im = self.target_transform(to_im)
 

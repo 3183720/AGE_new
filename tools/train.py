@@ -101,12 +101,12 @@ def train():
 	train_dataset = ImagesDataset(source_root=dataset_args['train_source_root'],
 									target_root=dataset_args['train_target_root'],
                                     opts=opts,
-									source_transform=transforms_dict['transform_source'],
+									source_transform=transforms_dict['transform_gt_train'],
 									target_transform=transforms_dict['transform_gt_train'])
 	valid_dataset = ImagesDataset(source_root=dataset_args['valid_source_root'],
 									target_root=dataset_args['valid_target_root'],
                                     opts=opts,
-									source_transform=transforms_dict['transform_source'],
+									source_transform=transforms_dict['transform_gt_train'],
 									target_transform=transforms_dict['transform_valid'])
 
 	if local_rank==0:
@@ -191,7 +191,7 @@ def validate(opts, net, orthogonal, sparse, lpips, valid_dataloader, device, glo
 		x, y, av_codes, av_codes1 = batch
 		with torch.no_grad():
 			x, y, av_codes, av_codes1 = x.to(device).float(), y.to(device).float(), av_codes.to(device).float(),av_codes1.to(device).float()
-			outputs = net.forward(x, av_codes, return_latents=True)
+			outputs = net.forward(x, av_codes,av_codes1, return_latents=True)
 			loss, cur_loss_dict, id_logs = calc_loss(opts, outputs, y, orthogonal, sparse, lpips)
 		agg_loss_dict.append(cur_loss_dict)
 
