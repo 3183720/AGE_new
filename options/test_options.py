@@ -17,7 +17,7 @@ class TestOptions:
 		self.parser.add_argument('--test_data_path', type=str, default=None, help='Path to to directory of inference inputs')
 		self.parser.add_argument('--output_path', type=str, default=None, help='Path to save outputs')
 		self.parser.add_argument('--class_embedding_path', type=str, default=None, help='Path to save class embeddings')
-		
+		self.parser.add_argument('--emotion_label', type=str, default=None, help='emotion_label')
 		self.parser.add_argument('--test_batch_size', default=2, type=int, help='Batch size for testing and inference')
 		self.parser.add_argument('--test_workers', default=2, type=int, help='Number of test/inference dataloader workers')
 		self.parser.add_argument('--secondary_class_embedding_path', default=None, type=str, help='path to secondary class embedding')
